@@ -43,7 +43,49 @@ window.onload = function () {
                 if (datosRegion1 && datosRegion2) {
                     console.log("Datos de " + region1, datosRegion1);
                     console.log("Datos de " + region2, datosRegion2);
-                    // funcion para graficar
+                    var fechas = datosRegion1.confirmed.map(function (item) {
+                        return item.date;
+                    });
+                    var valores1 = datosRegion1.confirmed.map(function (item) {
+                        return parseInt(item.value);
+                    });
+
+                    var valores2 = datosRegion2.confirmed.map(function (item) {
+                        return parseInt(item.value);
+                    });
+
+                    var ctx = document.getElementById("grafico").getContext("2d");
+
+                    new Chart(ctx, {
+                        type: "line",
+                        data: {
+                            labels: fechas,
+                            datasets: [
+                                {
+                                    label: region1,
+                                    data: valores1,
+                                    borderColor: "red",
+                                    fill: false
+                                },
+                                {
+                                    label: region2,
+                                    data: valores2,
+                                    borderColor: "blue",
+                                    fill: false
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: "Comparación de casos confirmados"
+                                }
+                            }
+                        }
+                    });
+
                 } else {
                     alert("No se encontraron datos para las regiones seleccionadas.");
                 }
