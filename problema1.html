@@ -3,8 +3,12 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Problema 1 - Comparación entre 2 Regiones</title>
+  <title>Problema 1 - Comparación entre Regiones</title>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
   <script src="problema1.js" defer></script>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -12,33 +16,33 @@
 <body>
   <h1>Comparación entre Regiones</h1>
 
-  <label for="regiones">Seleccione hasta 2 regiones:</label><br>
-  <select id="regiones" multiple size="10" style="width: 250px;">
-    <option value="1" data-region="Amazonas">Amazonas</option>
-    <option value="2" data-region="Áncash">Áncash</option>
-    <option value="3" data-region="Apurímac">Apurímac</option>
-    <option value="4" data-region="Arequipa">Arequipa</option>
-    <option value="5" data-region="Ayacucho">Ayacucho</option>
-    <option value="6" data-region="Cajamarca">Cajamarca</option>
-    <option value="7" data-region="Callao">Callao</option>
-    <option value="8" data-region="Cusco">Cusco</option>
-    <option value="9" data-region="Huancavelica">Huancavelica</option>
-    <option value="10" data-region="Huánuco">Huánuco</option>
-    <option value="11" data-region="Ica">Ica</option>
-    <option value="12" data-region="Junín">Junín</option>
-    <option value="13" data-region="La Libertad">La Libertad</option>
-    <option value="14" data-region="Lambayeque">Lambayeque</option>
-    <option value="15" data-region="Lima">Lima</option>
-    <option value="16" data-region="Loreto">Loreto</option>
-    <option value="17" data-region="Madre de Dios">Madre de Dios</option>
-    <option value="18" data-region="Moquegua">Moquegua</option>
-    <option value="19" data-region="Pasco">Pasco</option>
-    <option value="20" data-region="Piura">Piura</option>
-    <option value="21" data-region="Puno">Puno</option>
-    <option value="22" data-region="San Martín">San Martín</option>
-    <option value="23" data-region="Tacna">Tacna</option>
-    <option value="24" data-region="Tumbes">Tumbes</option>
-    <option value="25" data-region="Ucayali">Ucayali</option>
+  <label for="regiones">Seleccione una o más regiones:</label><br>
+  <select id="regiones" multiple>
+    <option value="Amazonas">Amazonas</option>
+    <option value="Áncash">Áncash</option>
+    <option value="Apurímac">Apurímac</option>
+    <option value="Arequipa">Arequipa</option>
+    <option value="Ayacucho">Ayacucho</option>
+    <option value="Cajamarca">Cajamarca</option>
+    <option value="Callao">Callao</option>
+    <option value="Cusco">Cusco</option>
+    <option value="Huancavelica">Huancavelica</option>
+    <option value="Huánuco">Huánuco</option>
+    <option value="Ica">Ica</option>
+    <option value="Junín">Junín</option>
+    <option value="La Libertad">La Libertad</option>
+    <option value="Lambayeque">Lambayeque</option>
+    <option value="Lima">Lima</option>
+    <option value="Loreto">Loreto</option>
+    <option value="Madre de Dios">Madre de Dios</option>
+    <option value="Moquegua">Moquegua</option>
+    <option value="Pasco">Pasco</option>
+    <option value="Piura">Piura</option>
+    <option value="Puno">Puno</option>
+    <option value="San Martín">San Martín</option>
+    <option value="Tacna">Tacna</option>
+    <option value="Tumbes">Tumbes</option>
+    <option value="Ucayali">Ucayali</option>
   </select> <br><br>
 
   <button id="generar">Generar Gráfico</button>

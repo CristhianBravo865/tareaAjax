@@ -1,3 +1,10 @@
+const select = document.getElementById('regiones');
+const choices = new Choices(select, {
+    removeItemButton: true,
+    maxItemCount: 25,
+    searchResultLimit: 10,
+    renderChoiceLimit: 25
+});
 window.onload = function () {
     var select = document.getElementById("regiones");
     var boton = document.getElementById("generar");
