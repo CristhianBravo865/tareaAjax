@@ -5,101 +5,99 @@ const choices = new Choices(select, {
     searchResultLimit: 10,
     renderChoiceLimit: 25
 });
+
 window.onload = function () {
-    var select = document.getElementById("regiones");
-    var boton = document.getElementById("generar");
+    const boton = document.getElementById("generar");
+    let graficoActual = null;
 
     boton.addEventListener("click", function () {
-        var opciones = select.options;
-        var seleccionadas = [];
+        const opciones = select.options;
+        const seleccionadas = [];
 
-        for (var i = 0; i < opciones.length; i++) {
+        for (let i = 0; i < opciones.length; i++) {
             if (opciones[i].selected) {
-                seleccionadas.push(opciones[i].getAttribute("data-region"));
+                const region = opciones[i].getAttribute("data-region");
+                if (region) {
+                    seleccionadas.push(region);
+                }
             }
         }
 
-        if (seleccionadas.length !== 2) {
-            alert("Debe seleccionar 2 regiones.");
+        if (seleccionadas.length === 0) {
+            alert("Debe seleccionar al menos una región.");
             return;
         }
 
-        console.log("Regiones elegidas: " + seleccionadas[0] + " y " + seleccionadas[1]);
+        console.log("Regiones seleccionadas:", seleccionadas);
 
-        var xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();
         xhr.open("GET", "data.json", true);
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                var datos = JSON.parse(xhr.responseText);
+                const datos = JSON.parse(xhr.responseText);
+                console.log("Datos cargados desde JSON:", datos.map(d => d.region));
 
-                var region1 = seleccionadas[0];
-                var region2 = seleccionadas[1];
+                const fechas = [];
+                const datasets = [];
 
-                var datosRegion1 = null;
-                var datosRegion2 = null;
+                seleccionadas.forEach(regionNombre => {
+                    const datosRegion = datos.find(r => r.region === regionNombre);
 
-                for (var i = 0; i < datos.length; i++) {
-                    if (datos[i].region === region1) {
-                        datosRegion1 = datos[i];
-                    } else if (datos[i].region === region2) {
-                        datosRegion2 = datos[i];
+                    if (datosRegion) {
+                        console.log("Región encontrada:", regionNombre);
+                        if (fechas.length === 0) {
+                            datosRegion.confirmed.forEach(item => fechas.push(item.date));
+                        }
+
+                        const valores = datosRegion.confirmed.map(item => parseInt(item.value));
+                        datasets.push({
+                            label: regionNombre,
+                            data: valores,
+                            borderColor: colorAleatorio(),
+                            fill: false
+                        });
+                    } else {
+                        console.warn("Región no encontrada en data.json:", regionNombre);
                     }
+                });
+
+                if (datasets.length === 0) {
+                    alert("No se encontraron datos para las regiones seleccionadas.");
+                    return;
                 }
 
-                if (datosRegion1 && datosRegion2) {
-                    console.log("Datos de " + region1, datosRegion1);
-                    console.log("Datos de " + region2, datosRegion2);
-                    var fechas = datosRegion1.confirmed.map(function (item) {
-                        return item.date;
-                    });
-                    var valores1 = datosRegion1.confirmed.map(function (item) {
-                        return parseInt(item.value);
-                    });
+                const ctx = document.getElementById("grafico").getContext("2d");
+                if (graficoActual) {
+                    graficoActual.destroy();
+                }
 
-                    var valores2 = datosRegion2.confirmed.map(function (item) {
-                        return parseInt(item.value);
-                    });
-
-                    var ctx = document.getElementById("grafico").getContext("2d");
-
-                    new Chart(ctx, {
-                        type: "line",
-                        data: {
-                            labels: fechas,
-                            datasets: [
-                                {
-                                    label: region1,
-                                    data: valores1,
-                                    borderColor: "red",
-                                    fill: false
-                                },
-                                {
-                                    label: region2,
-                                    data: valores2,
-                                    borderColor: "blue",
-                                    fill: false
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                title: {
-                                    display: true,
-                                    text: "Comparación de casos confirmados"
-                                }
+                graficoActual = new Chart(ctx, {
+                    type: "line",
+                    data: {
+                        labels: fechas,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: "Comparación de casos confirmados"
                             }
                         }
-                    });
-
-                } else {
-                    alert("No se encontraron datos para las regiones seleccionadas.");
-                }
+                    }
+                });
             }
         };
 
         xhr.send();
-
     });
+
+    function colorAleatorio() {
+        const r = Math.floor(Math.random() * 200);
+        const g = Math.floor(Math.random() * 200);
+        const b = Math.floor(Math.random() * 200);
+        return `rgb(${r}, ${g}, ${b})`;
+    }
 };
